@@ -13,6 +13,11 @@ class Database
         $this->api = $api;
     }
 
+    public function create(string $name)
+    {
+        return $this->api->raw("sql/addb.html?db=${name}");
+    }
+
     public function delete(string $name)
     {
         return $this->api->raw("sql/deldb.html?db=${name}");
