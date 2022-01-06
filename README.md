@@ -1,6 +1,24 @@
-# CPANEL API
+# CPANEL API <!-- omit in toc -->
 
-Unofficial CPanel api for shared hosting. For Laravel
+Unofficial CPanel wrapper for shared hosting. For Laravel.
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  - [Subdomain](#subdomain)
+    - [Create subdomain](#create-subdomain)
+    - [Delete subdomain](#delete-subdomain)
+  - [Database](#database)
+    - [Create database](#create-database)
+    - [Delete database](#delete-database)
+  - [Database User](#database-user)
+    - [Create database user](#create-database-user)
+    - [Add user to database](#add-user-to-database)
+    - [Delete database user](#delete-database-user)
+
+## Installation
+
+`composer require akhaled/cpanel-api`
 
 ## Configuration
 
