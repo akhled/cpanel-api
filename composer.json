@@ -1,0 +1,26 @@
+{
+  "name": "akhaled/cpanel-api",
+  "description": "Unofficial api for cpanel",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Amr Khaled",
+      "email": "i@akhaled.com"
+    }
+  ],
+  "require": {
+
+  },
+  "autoload": {
+    "psr-4": {
+      "Akhaled\\CPanelAPI\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Akhaled\\CPanelAPI\\Providers\\CPanelAPIServiceProvider"
+      ]
+    }
+  }
+}
