@@ -14,7 +14,7 @@ class CPanelAPIServiceProvider extends ServiceProvider
             __DIR__.'/../../config/cpanel.php', 'cpanel'
         );
 
-        App::bind('test',function() {
+        App::bind('cpanel-api',function() {
             return new CPanelAPI;
         });
     }
