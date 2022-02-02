@@ -2,12 +2,19 @@
 
 namespace Akhaled\CPanelAPI;
 
+use Akhaled\CPanelAPI\Modules\Domain;
 use Akhaled\CPanelAPI\Modules\Database;
-use Akhaled\CPanelAPI\Modules\DatabaseUser;
 use Akhaled\CPanelAPI\Modules\SubDomain;
+use Akhaled\CPanelAPI\Modules\DatabaseUser;
+use Illuminate\Support\Facades\Http;
 
 class CPanelAPI
 {
+    public function domain()
+    {
+        return new Domain($this);
+    }
+
     public function subdomain(string $domain = null)
     {
         return new SubDomain($this, $domain);
@@ -31,5 +38,12 @@ class CPanelAPI
         // $curl_path = "/usr/bin/curl";
         $curl_path = "";
         return !empty($curl_path) ? exec("$curl_path '$url'") : file_get_contents($url);
+    }
+
+    public function post(array $payload = [])
+    {
+        $cpanel = config('cpanel');
+
+        return Http::post("https://$cpanel[user]:$cpanel[password]@$cpanel[host]:2083/json-api/cpanel", $payload);
     }
 }

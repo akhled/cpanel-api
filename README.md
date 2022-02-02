@@ -5,6 +5,9 @@ Unofficial CPanel wrapper for shared hosting. For Laravel.
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
+  - [Domains](#domains)
+    - [Create domain](#create-domain)
+    - [Delete domain](#delete-domain)
   - [Subdomain](#subdomain)
     - [Create subdomain](#create-subdomain)
     - [Delete subdomain](#delete-subdomain)
@@ -32,6 +35,24 @@ CPANEL_SKIN=paper_lantern
 ```
 
 ## Usage
+
+### Domains
+
+#### Create domain
+
+```php
+$domain = 'example.com';
+
+Akhaled\CPanelAPI\Facades\CPanelAPI::domain()->create($domain);
+```
+
+#### Delete domain
+
+```php
+$domain = 'example.com';
+
+Akhaled\CPanelAPI\Facades\CPanelAPI::domain()->delete($domain);
+```
 
 ### Subdomain
 
