@@ -35,6 +35,7 @@ CPANEL_USER=xxxxxx
 CPANEL_PASSWORD=xxxxx
 CPANEL_HOST=123.456.789
 CPANEL_SKIN=paper_lantern
+CPANEL_DEFAULT_DOMAIN_DIR=public_html
 ```
 
 ## Usage
@@ -67,7 +68,7 @@ $subdomain = 'example';
 $dir = 'public_html';
 $root_domain = 'base.com';
 
-Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdoamin, $dir, $root_domain);
+Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdomain, $dir, $root_domain);
 ```
 
 #### Delete addon domain
