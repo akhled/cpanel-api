@@ -2,9 +2,9 @@
 
 namespace Akhaled\CPanelAPI\Providers;
 
+use Akhaled\CPanelAPI\CPanelAPI;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
-use Akhaled\CPanelAPI\Facades\CPanelAPI;
 
 class CPanelAPIServiceProvider extends ServiceProvider
 {
