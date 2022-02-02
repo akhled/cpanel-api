@@ -63,7 +63,7 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::domain()->delete($domain);
 
 ```php
 $domain = 'example.com';
-$subdomain = null;
+$subdomain = 'example';
 $dir = 'public_html';
 $root_domain = 'base.com';
 
@@ -74,8 +74,10 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdoamin, 
 
 ```php
 $domain = 'example.com';
+$subdomain = 'example_base.com';
+$fullsubdomain = 'example.base.com'
 
-Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->delete($domain);
+Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->delete($domain, $subdomain, $fullsubdomain);
 ```
 
 ### Subdomain
