@@ -2,6 +2,7 @@
 
 namespace Akhaled\CPanelAPI;
 
+use Akhaled\CPanelAPI\Modules\AddonDomain;
 use Akhaled\CPanelAPI\Modules\Domain;
 use Akhaled\CPanelAPI\Modules\Database;
 use Akhaled\CPanelAPI\Modules\SubDomain;
@@ -13,6 +14,11 @@ class CPanelAPI
     public function domain()
     {
         return new Domain($this);
+    }
+
+    public function addonDomain()
+    {
+        return new AddonDomain($this);
     }
 
     public function subdomain(string $domain = null)
