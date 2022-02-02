@@ -8,6 +8,9 @@ Unofficial CPanel wrapper for shared hosting. For Laravel.
   - [Domains](#domains)
     - [Create domain](#create-domain)
     - [Delete domain](#delete-domain)
+  - [Addon domains](#addon-domains)
+    - [Create addon domain](#create-addon-domain)
+    - [Delete addon domain](#delete-addon-domain)
   - [Subdomain](#subdomain)
     - [Create subdomain](#create-subdomain)
     - [Delete subdomain](#delete-subdomain)
@@ -52,6 +55,27 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::domain()->create($domain);
 $domain = 'example.com';
 
 Akhaled\CPanelAPI\Facades\CPanelAPI::domain()->delete($domain);
+```
+
+### Addon domains
+
+#### Create addon domain
+
+```php
+$domain = 'example.com';
+$subdomain = null;
+$dir = 'public_html';
+$root_domain = 'base.com';
+
+Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdoamin, $dir, $root_domain);
+```
+
+#### Delete addon domain
+
+```php
+$domain = 'example.com';
+
+Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->delete($domain);
 ```
 
 ### Subdomain

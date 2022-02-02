@@ -4,7 +4,7 @@ namespace Akhaled\CPanelAPI\Modules;
 
 use Akhaled\CPanelAPI\CPanelAPI;
 
-class Domain
+class AddonDomain
 {
     private $api;
 
@@ -13,14 +13,9 @@ class Domain
         $this->api = $api;
     }
 
-    public function create(string $domain)
+    public function create(string $domain, string $subdomain = null, string $dir = null, string $root_domain)
     {
-        return $this->api->post([
-            'cpanel_jsonapi_apiversion' => "2",
-            'cpanel_jsonapi_module' => "Park",
-            'cpanel_jsonapi_func' => "park",
-            'domain' => $domain,
-        ])->getBody();
+        return $this->api->raw("addon/doadddomain.html?domain=${domain}&subdomain=${subdomain}&dir=${dir}&ftpuser=&root_domain=${root_domain}&pass=&pass2=&go=Add+Domain");
     }
 
     public function delete(string $domain)
