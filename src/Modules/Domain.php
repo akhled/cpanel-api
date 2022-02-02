@@ -21,7 +21,7 @@ class Domain
             'cpanel_jsonapi_module' => "Park",
             'cpanel_jsonapi_func' => "park",
             'domain' => $domain,
-        ]);
+        ])->getBody();
     }
 
     public function delete(string $domain)
