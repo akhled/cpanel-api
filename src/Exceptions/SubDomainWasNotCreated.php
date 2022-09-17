@@ -4,7 +4,7 @@ namespace Akhaled\CPanelAPI\Exceptions;
 
 use Exception;
 
-class SubDomainDidNotCreated extends Exception
+class SubDomainWasNotCreated extends Exception
 {
     //
 }

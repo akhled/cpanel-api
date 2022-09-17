@@ -4,9 +4,10 @@ namespace Akhaled\CPanelAPI\Modules;
 
 use Akhaled\CPanelAPI\CPanelAPI;
 use Akhaled\CPanelAPI\Events\SubDomainCreated;
-use Akhaled\CPanelAPI\Exceptions\SubDomainDidNotCreated;
+use Akhaled\CPanelAPI\Events\SubDomainDeleted;
+use Akhaled\CPanelAPI\Exceptions\SubDomainWasNotDeleted;
 use Akhaled\CPanelAPI\Exceptions\NoDomainGivenForSubDomain;
-use Illuminate\Support\Facades\Http;
+use Akhaled\CPanelAPI\Exceptions\SubDomainWasNotCreated;
 use PHPHtmlParser\Dom\Node\HtmlNode;
 
 class SubDomain extends Module
@@ -38,28 +39,24 @@ class SubDomain extends Module
 
         throw_unless(
             (is_array($response) && $response['status'] == 1) || $response instanceof HtmlNode,
-            SubDomainDidNotCreated::class
+            SubDomainWasNotCreated::class
         );
 
         event(new SubDomainCreated($this->domain, $subdomain, $dir));
     }
 
-    public function delete(string $subdomain)
+    public function delete(string $subdomain): void
     {
-        if (!$this->domain) {
-            throw new NoDomainGivenForSubDomain;
-        }
+        throw_if(is_null($this->domain), NoDomainGivenForSubDomain::class);
 
-        $cpanel = config('cpanel');
-
+        // whm
         // https://hostname.example.com:2087/cpsess##########/json-api/delete_domain?api.version=1&domain=example.com
 
-        // return Http::withBasicAuth($cpanel['user'], $cpanel['password'])
-        //     ->get("https://$cpanel[host]:2087/cpsess8258417469/json-api/delete_domain", [
-        //         'api.version' => 1,
-        //         'domain' => "${subdomain}.{$this->domain}"
-        //     ]);
+        $response = $this->api->raw("subdomain/dodeldomain.html?domain=${subdomain}.{$this->domain}")
+            ->getElementById('deleteSuccess');
 
-        return $this->api->raw("subdomain/dodeldomain.html?domain=${subdomain}.{$this->domain}");
+        throw_unless($response instanceof HtmlNode, SubDomainWasNotDeleted::class);
+
+        event(new SubDomainDeleted($this->domain, $subdomain));
     }
 }
