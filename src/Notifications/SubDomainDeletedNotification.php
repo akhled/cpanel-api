@@ -30,6 +30,6 @@ class SubDomainDeletedNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->success()
             ->subject('Domain deleted ✅')
-            ->line("❌ {{$this->subdomain}}.{{$this->domain}} was deleted successfully");
+            ->line("❌ {$this->subdomain}.{$this->domain} was deleted successfully");
     }
 }
