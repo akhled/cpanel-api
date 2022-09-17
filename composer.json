@@ -9,7 +9,9 @@
     }
   ],
   "require": {
-    "illuminate/support": "5.*|6.*|7.*|8.*"
+    "illuminate/support": "*",
+    "illuminate/notifications": "*",
+    "paquettg/php-html-parser": "^3.1"
   },
   "autoload": {
     "psr-4": {
@@ -22,5 +24,8 @@
         "Akhaled\\CPanelAPI\\Providers\\CPanelAPIServiceProvider"
       ]
     }
+  },
+  "require-dev": {
+    "orchestra/canvas": "^6.10"
   }
 }

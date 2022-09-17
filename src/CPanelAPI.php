@@ -8,9 +8,19 @@ use Akhaled\CPanelAPI\Modules\Database;
 use Akhaled\CPanelAPI\Modules\SubDomain;
 use Akhaled\CPanelAPI\Modules\DatabaseUser;
 use Illuminate\Support\Facades\Http;
+use PHPHtmlParser\Dom;
 
 class CPanelAPI
 {
+    public $curl;
+
+    function __construct()
+    {
+        if (!is_null(config('cpanel.token'))) {
+            $this->setUpAPI2();
+        }
+    }
+
     public function domain()
     {
         return new Domain($this);
@@ -36,14 +46,14 @@ class CPanelAPI
         return new DatabaseUser($this);
     }
 
-    public function raw(string $url)
+    public function raw(string $url): Dom
     {
         $cpanel = config('cpanel');
-        $url = "https://$cpanel[user]:$cpanel[password]@$cpanel[host]:2083/frontend/$cpanel[skin]/".$url;
 
-        // $curl_path = "/usr/bin/curl";
-        $curl_path = "";
-        return !empty($curl_path) ? exec("$curl_path '$url'") : file_get_contents($url);
+        return (new Dom())->loadStr(
+            Http::get("https://$cpanel[user]:".urlencode($cpanel['password'])."@$cpanel[host]:2083/frontend/$cpanel[skin]/".$url)
+                ->body()
+        );
     }
 
     public function post(array $payload = [])
@@ -51,5 +61,12 @@ class CPanelAPI
         $cpanel = config('cpanel');
 
         return Http::post("https://$cpanel[user]:$cpanel[password]@$cpanel[host]:2083/json-api/cpanel", $payload);
+    }
+
+    private function setUpAPI2(): void
+    {
+        $this->curl = Http::withHeaders([
+            'Authorization' => "cpanel ".config('cpanel.user').":".config('cpanel.token')
+        ]);
     }
 }
