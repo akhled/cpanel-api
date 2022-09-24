@@ -25,15 +25,15 @@ class SubDomain extends Module
     {
         throw_if(is_null($this->domain), NoDomainGivenForSubDomain::class);
 
-        $dir ??= $this->domain;
+        $dir ??= config('cpanel.default_dir', $this->domain);
         $this->function = 'addsubdomain';
 
         $response = $this->raw([
             'rootdomain' => $this->domain,
             'domain' => $subdomain,
             'dir' => $dir,
-        ], function(CPanelAPI $api) use ($subdomain) {
-            return $api->raw("subdomain/doadddomain.html?rootdomain={$this->domain}&domain=${subdomain}&dir={$this->domain}/public&go=Create")
+        ], function(CPanelAPI $api) use ($subdomain, $dir) {
+            return $api->raw("subdomain/doadddomain.html?rootdomain={$this->domain}&domain=${subdomain}&dir={$dir}&go=Create")
                 ->getElementById('#addSuccess');
         });
 
