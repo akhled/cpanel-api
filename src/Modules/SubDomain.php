@@ -60,7 +60,7 @@ class SubDomain extends Module
         ])->json();
 
         throw_unless(isset($response['cpanelresult']), new Exception(json_encode($response)));
-        throw_if(isset($response['cpanelresult']['error']), new Exception($response['cpanelresult']['error']));
+        throw_if(isset($response['cpanelresult']['error']), new Exception($response['cpanelresult']['error'] ?? ""));
 
         event(new SubDomainDeleted($this->domain, $subdomain));
     }
