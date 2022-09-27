@@ -60,7 +60,7 @@ class CPanelAPI
     {
         $cpanel = config('cpanel');
 
-        return Http::post("https://$cpanel[user]:$cpanel[password]@$cpanel[host]:2083/json-api/cpanel", $payload);
+        return Http::post("https://$cpanel[user]:".urlencode($cpanel['password'])."@$cpanel[host]:2083/json-api/cpanel", $payload);
     }
 
     private function setUpAPI2(): void
