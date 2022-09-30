@@ -15,6 +15,21 @@ class AddonDomain
         $this->api = $api;
     }
 
+    public function list(string $search = null): array
+    {
+        $payload = [
+            'cpanel_jsonapi_module' => 'AddonDomain',
+            'cpanel_jsonapi_func' => 'listaddondomains',
+            'return_https_redirect_status' => 1
+        ];
+
+        if (!is_null($search)) {
+            $payload['regex'] = 'username_example.com';
+        }
+
+        return $this->api->post($payload)['data'] ?? [];
+    }
+
     public function create(string $domain, string $subdomain, string $dir = null)
     {
         $dir ??= config('cpanel.default_dir', $domain);

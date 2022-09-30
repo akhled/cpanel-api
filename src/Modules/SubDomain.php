@@ -20,6 +20,21 @@ class SubDomain extends Module
         $this->domain = $domain;
     }
 
+    public function list(string $search = null): array
+    {
+        $payload = [
+            'cpanel_jsonapi_module' => 'SubDomain',
+            'cpanel_jsonapi_func' => 'listsubdomains',
+            'return_https_redirect_status' => 1
+        ];
+
+        if (!is_null($search)) {
+            $payload['regex'] = 'username_example.com';
+        }
+
+        return $this->api->post($payload)['data'] ?? [];
+    }
+
     public function create(string $subdomain, string $dir = null): void
     {
         throw_if(is_null($this->domain), NoDomainGivenForSubDomain::class);
