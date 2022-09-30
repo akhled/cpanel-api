@@ -7,7 +7,6 @@ use Akhaled\CPanelAPI\Events\SubDomainCreated;
 use Akhaled\CPanelAPI\Events\SubDomainDeleted;
 use Akhaled\CPanelAPI\Exceptions\NoDomainGivenForSubDomain;
 use Akhaled\CPanelAPI\Exceptions\SubDomainWasNotCreated;
-use Exception;
 use PHPHtmlParser\Dom\Node\HtmlNode;
 
 class SubDomain extends Module
@@ -49,18 +48,11 @@ class SubDomain extends Module
     {
         throw_if(is_null($this->domain), NoDomainGivenForSubDomain::class);
 
-        // whm
-        // https://hostname.example.com:2087/cpsess##########/json-api/delete_domain?api.version=1&domain=example.com
-
-        $response = $this->api->post([
-            'cpanel_jsonapi_apiversion' => 2,
+        $this->api->post([
             'cpanel_jsonapi_module' => "SubDomain",
             'cpanel_jsonapi_func' => "delsubdomain",
             'domain' => "${subdomain}.{$this->domain}",
         ])->json();
-
-        throw_unless(isset($response['cpanelresult']), new Exception(json_encode($response)));
-        throw_if(isset($response['cpanelresult']['error']), new Exception($response['cpanelresult']['error'] ?? ""));
 
         event(new SubDomainDeleted($this->domain, $subdomain));
     }

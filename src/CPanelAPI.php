@@ -7,6 +7,7 @@ use Akhaled\CPanelAPI\Modules\Domain;
 use Akhaled\CPanelAPI\Modules\Database;
 use Akhaled\CPanelAPI\Modules\SubDomain;
 use Akhaled\CPanelAPI\Modules\DatabaseUser;
+use Exception;
 use Illuminate\Support\Facades\Http;
 use PHPHtmlParser\Dom;
 
@@ -56,11 +57,20 @@ class CPanelAPI
         );
     }
 
-    public function post(array $payload = [])
+    public function post(array $payload = []): array
     {
         $cpanel = config('cpanel');
 
-        return Http::post("https://$cpanel[user]:".urlencode($cpanel['password'])."@$cpanel[host]:2083/json-api/cpanel", $payload);
+        $payload = array_merge($payload, [
+            'cpanel_jsonapi_apiversion' => 2,
+        ]);
+
+        $response = Http::post("https://$cpanel[user]:".urlencode($cpanel['password'])."@$cpanel[host]:2083/json-api/cpanel", $payload);
+
+        throw_unless(isset($response['cpanelresult']), new Exception(json_encode($response)));
+        throw_if(isset($response['cpanelresult']['error']), new Exception($response['cpanelresult']['error'] ?? ""));
+
+        return $response['cpanelresult'];
     }
 
     private function setUpAPI2(): void

@@ -16,7 +16,6 @@ class Domain
     public function create(string $domain)
     {
         return $this->api->post([
-            'cpanel_jsonapi_apiversion' => "2",
             'cpanel_jsonapi_module' => "Park",
             'cpanel_jsonapi_func' => "park",
             'domain' => $domain,
