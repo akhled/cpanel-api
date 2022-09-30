@@ -52,7 +52,7 @@ class SubDomain extends Module
             'cpanel_jsonapi_module' => "SubDomain",
             'cpanel_jsonapi_func' => "delsubdomain",
             'domain' => "${subdomain}.{$this->domain}",
-        ])->json();
+        ]);
 
         event(new SubDomainDeleted($this->domain, $subdomain));
     }
