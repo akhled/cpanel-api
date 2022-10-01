@@ -2,20 +2,20 @@
 
 namespace Akhaled\CPanelAPI\Listeners;
 
-use Akhaled\CPanelAPI\Events\SubDomainDeleted;
-use Akhaled\CPanelAPI\Notifications\SubDomainDeletedNotification;
+use Akhaled\CPanelAPI\Events\AddonDomainCreated;
+use Akhaled\CPanelAPI\Notifications\AddonDomainCreatedNotification;
 use Exception;
 use Illuminate\Support\Facades\Notification;
 
-class SendSubDomainDeletedNotification
+class SendAddonDomainCreatedNotification
 {
-    public function handle(SubDomainDeleted $event)
+    public function handle(AddonDomainCreated $event)
     {
         try {
             Notification::route('mail', [
                 config('cpanel.notifiable_email') => config('cpanel.notifiable_name')
             ])->notify(
-                new SubDomainDeletedNotification($event->domain, $event->subdomain)
+                new AddonDomainCreatedNotification($event->domain, $event->subdomain, $event->path)
             );
         } catch (Exception $ex) {
             logger($ex);

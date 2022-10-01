@@ -12,7 +12,7 @@ class SendSubDomainCreatedNotification
     public function handle(SubDomainCreated $event)
     {
         try {
-            Notification::route('mail', config('cpanel.notifiable_email', 'test@example.org'))
+            Notification::route('mail', config('cpanel.notifiable_email'))
                 ->notify(
                     new SubDomainCreatedNotification($event->domain, $event->subdomain, $event->path)
                 );
