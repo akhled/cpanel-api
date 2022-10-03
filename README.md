@@ -36,6 +36,8 @@ CPANEL_PASSWORD=xxxxx
 CPANEL_HOST=123.456.789
 CPANEL_SKIN=paper_lantern
 CPANEL_DEFAULT_DOMAIN_DIR=public_html
+CPANEL_TOKEN=xxxxx
+CPANEL_DOMAIN=example.com
 ```
 
 ## Usage
@@ -65,10 +67,9 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::domain()->delete($domain);
 ```php
 $domain = 'example.com';
 $subdomain = 'example';
-$dir = 'public_html';
-$root_domain = 'base.com';
+$dir = 'public_html'; // optional, default config('cpanel.default_dir')
 
-Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdomain, $dir, $root_domain);
+Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdomain, $dir);
 ```
 
 #### Delete addon domain
@@ -76,9 +77,8 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->create($domain, $subdomain, 
 ```php
 $domain = 'example.com';
 $subdomain = 'example_base.com';
-$fullsubdomain = 'example.base.com'
 
-Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->delete($domain, $subdomain, $fullsubdomain);
+Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->delete($domain, $subdomain);
 ```
 
 ### Subdomain
@@ -89,8 +89,9 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::addonDomain()->delete($domain, $subdomain, 
 // subdomain: beta.example.com
 $domain = 'example.com';
 $subdomain = 'beta';
+$dir = 'public_html'; // optional, default config('cpanel.default_dir')
 
-Akhaled\CPanelAPI\Facades\CPanelAPI::subdomain($domain)->create($subdomain);
+Akhaled\CPanelAPI\Facades\CPanelAPI::subdomain($domain)->create($subdomain, $dir);
 ```
 
 #### Delete subdomain
@@ -148,3 +149,7 @@ Akhaled\CPanelAPI\Facades\CPanelAPI::databaseUser()->addToDatabase($db_user, $db
 
     Akhaled\CPanelAPI\Facades\CPanelAPI::databaseUser()->delete($db_user);
 ```
+
+## License
+
+CPanel package is open-sourced software licensed under the [MIT license](LICENSE.md).
