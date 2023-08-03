@@ -7,7 +7,7 @@ use Akhaled\CPanelAPI\Events\SubDomainCreated;
 use Akhaled\CPanelAPI\Events\SubDomainDeleted;
 use Akhaled\CPanelAPI\Exceptions\NoDomainGivenForSubDomain;
 use Akhaled\CPanelAPI\Exceptions\SubDomainWasNotCreated;
-use PHPHtmlParser\Dom\Node\HtmlNode;
+use Illuminate\Support\Facades\Http;
 
 class SubDomain extends Module
 {
@@ -39,21 +39,26 @@ class SubDomain extends Module
     {
         throw_if(is_null($this->domain), NoDomainGivenForSubDomain::class);
 
-        $dir ??= config('cpanel.default_dir', $this->domain);
+        $dir ??= config('cpanel.default_dir')."$dir/{$subdomain}.{$this->domain}";
         $this->function = 'addsubdomain';
+        $cpanel = config('cpanel');
 
-        $response = $this->raw([
-            'rootdomain' => $this->domain,
-            'domain' => $subdomain,
-            'dir' => $dir,
-        ], function(CPanelAPI $api) use ($subdomain, $dir) {
-            return $api->raw("subdomain/doadddomain.html?rootdomain={$this->domain}&domain=${subdomain}&dir={$dir}&go=Create")
-                ->getElementById('#addSuccess');
-        });
+        $payload = [
+            'api.version' => 1,
+            'domain' => "{$subdomain}.{$this->domain}",
+            'document_root' => $dir
+        ];
+
+        $response = Http::withHeaders([
+            'Authorization' => "whm ".config('cpanel.user').":".config('cpanel.token')
+        ])->withOptions([
+            'verify' => false,
+        ])->get("{$cpanel['host']}/json-api/create_subdomain?".http_build_query($payload));
 
         throw_unless(
-            (is_array($response) && $response['status'] == 1) || $response instanceof HtmlNode,
-            SubDomainWasNotCreated::class
+            is_array($response) && $response['status'] == 1,
+            SubDomainWasNotCreated::class,
+            $response->body()
         );
 
         event(new SubDomainCreated($this->domain, $subdomain, $dir));
