@@ -7,6 +7,7 @@ use Akhaled\CPanelAPI\Events\SubDomainCreated;
 use Akhaled\CPanelAPI\Events\SubDomainDeleted;
 use Akhaled\CPanelAPI\Exceptions\NoDomainGivenForSubDomain;
 use Akhaled\CPanelAPI\Exceptions\SubDomainWasNotCreated;
+use PHPHtmlParser\Dom\Node\HtmlNode;
 use Illuminate\Support\Facades\Http;
 
 class SubDomain extends Module
@@ -55,8 +56,10 @@ class SubDomain extends Module
             'verify' => false,
         ])->get("{$cpanel['host']}/json-api/create_subdomain?".http_build_query($payload));
 
+        $data = $response->json();
+
         throw_unless(
-            is_array($response) && $response['status'] == 1,
+            is_array($data) && \Arr::get($data, 'metadata.result') == 1,
             SubDomainWasNotCreated::class,
             $response->body()
         );
